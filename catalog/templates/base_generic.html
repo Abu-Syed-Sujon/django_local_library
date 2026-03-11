@@ -1,0 +1,30 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Local Library</title>
+</head>
+<body>
+    <div class="sidebar">
+        {% block sidebar %}
+        <ul>
+            <li><a href=" {% url 'catalog:index' %}">Home</a></li>
+            <li><a href="#">All Books</a></li>
+            <li><a href="#">All Authors</a></li>
+
+            
+        </ul>
+          
+        {% endblock sidebar %}
+        
+
+    </div>
+
+<div class="content">
+    {% block content %}
+      
+    {% endblock content %}
+</div>
+</body>
+</html>

@@ -5,4 +5,6 @@ app_name = 'catalog' # Matches the namespace above
 urlpatterns = [
     path('', views.index, name='index'),
     path('books/', views.BookListView.as_view(), name='books'),
+    path('authors/', views.AuthorListView.as_view(), name='books'),
+    
 ]
