@@ -10,8 +10,8 @@
         {% block sidebar %}
         <ul>
             <li><a href=" {% url 'catalog:index' %}">Home</a></li>
-            <li><a href="#">All Books</a></li>
-            <li><a href="#">All Authors</a></li>
+            <li><a href="{% url 'catalog:books' %}">All Books</a></li>
+            <li><a href="{%url 'catalog:authors'%}">All Authors</a></li>
 
             
         </ul>
