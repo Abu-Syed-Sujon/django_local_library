@@ -70,7 +70,7 @@ class Author(models.Model):
 
     # URL for author detail page
     def get_absolute_url(self):
-        return reverse('author-detail', args=[str(self.id)])
+        return reverse('catalog:author-detail', args=[str(self.id)])
 
     # How author will appear in admin
     def __str__(self):
@@ -124,7 +124,7 @@ class Book(models.Model):
 
     # URL to access book detail page
     def get_absolute_url(self):
-        return reverse('book-detail', args=[str(self.id)])
+        return reverse('catalog:book-detail', args=[str(self.id)])
 
 
 # =========================================================

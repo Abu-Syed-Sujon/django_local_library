@@ -23,5 +23,5 @@ urlpatterns = [
     # Namespace your app to avoid name collisions between different apps
     path('catalog/', include('catalog.urls', namespace='catalog')), 
     # Root redirect to your main app
-    #path('', RedirectView.as_view(url='catalog/')),
+    path('', RedirectView.as_view(url='catalog/')),
 ]
