@@ -2,17 +2,21 @@
 
 {% block content %}
 
-  <h1>Local Library Home</h1>
-  <p>Welcome to our Local Library</p>
-  <h2>Dinamic Content</h2>
+<h1>Local Library Home</h1>
 
+<p>Welcome to our Local Library</p>
 
+<h2>Dynamic Content</h2>
 
 <ul>
-    <li>Books: {{num_books}}</li>
-    <li>Copies: {{num_instances}}</li>
-    <li>Available Copies: {{num_instances_available}}</li>
-    <li>Authors: {{num_authors}}</li>
+    <li><strong>Books:</strong> {{ num_books }}</li>
+    <li><strong>Copies:</strong> {{ num_instances }}</li>
+    <li><strong>Available Copies:</strong> {{ num_instances_available }}</li>
+    <li><strong>Authors:</strong> {{ num_authors }}</li>
 </ul>
+
+<p>
+    You have visited this page {{ num_visits }} time{{ num_visits|pluralize }}.
+</p>
 
 {% endblock content %}
