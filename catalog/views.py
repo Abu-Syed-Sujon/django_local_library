@@ -1,6 +1,7 @@
 from django.shortcuts import render
 from django.views import generic
 from .models import Book, Author, BookInstance, Genre
+from django.contrib.auth.mixins import LoginRequiredMixin
 
 # Create your views here.
 
@@ -53,3 +54,42 @@ class AuthorListView(generic.ListView):
 
 class AuthorDetailView(generic.DetailView):
     model = Author
+    
+
+class LoanedBooksByUserListView(LoginRequiredMixin, generic.ListView):
+    """
+    View to show books borrowed by the currently logged-in user.
+    
+    LoginRequiredMixin:
+        - Prevents anonymous users from accessing this page
+        - Redirects to login page if not authenticated
+    """
+
+    model = BookInstance  # Model to query
+    template_name = 'catalog/bookinstance_list_borrowed_user.html'
+    paginate_by = 10  # Optional: limits results per page
+
+    def get_queryset(self):
+        """
+        Override default queryset:
+        - Only show books borrowed by current user
+        - Only show books with status 'o' (on loan)
+        - Order by due date
+        """
+        return BookInstance.objects.filter(
+            borrower=self.request.user,
+            status='o'
+        ).order_by('due_back')
+        
+from django.contrib.auth.decorators import login_required, permission_required
+
+@login_required  # Must be logged in
+@permission_required('catalog.can_mark_returned', raise_exception=True)
+def my_view(request):
+    """
+    Only users with 'can_mark_returned' permission can access.
+    
+    raise_exception=True:
+        - Returns 403 instead of redirect
+    """
+    pass

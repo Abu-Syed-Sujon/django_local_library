@@ -1,6 +1,8 @@
 # Import required Django modules
 from django.db import models
 from django.urls import reverse
+from django.conf import settings  # Used to reference User model safely
+from datetime import date  # Used for date comparison
 
 # For creating unique IDs for BookInstance
 import uuid
@@ -160,6 +162,14 @@ class BookInstance(models.Model):
     # Date when book should be returned
     due_back = models.DateField(null=True, blank=True)
 
+     # NEW: Track who borrowed the book
+    borrower = models.ForeignKey(
+        settings.AUTH_USER_MODEL,
+        on_delete=models.SET_NULL,
+        null=True,
+        blank=True,
+        help_text="User who borrowed this book"
+    )
     # Status choices
     LOAN_STATUS = (
         ('m', 'Maintenance'),
@@ -180,7 +190,18 @@ class BookInstance(models.Model):
     class Meta:
         # Sort book instances by due date
         ordering = ['due_back']
-
+    # NEW: Custom permission
+        permissions = (
+            ("can_mark_returned", "Set book as returned"),
+        )
     # How instance will appear in admin
     def __str__(self):
         return f"{self.id} ({self.book.title})"
+    
+    @property
+    def is_overdue(self):
+        """
+        Check if book is overdue
+        """
+        return bool(self.due_back and date.today() > self.due_back)
+    
