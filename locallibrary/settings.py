@@ -11,6 +11,7 @@ https://docs.djangoproject.com/en/6.0/ref/settings/
 """
 
 from pathlib import Path
+import os # Used for handling file paths
 
 # Build paths inside the project like this: BASE_DIR / 'subdir'.
 BASE_DIR = Path(__file__).resolve().parent.parent
@@ -25,7 +26,12 @@ SECRET_KEY = 'django-insecure-#d+_3*wvzwi8ulu*w4az0%k=_f7278+_*5t!yj_d6z#a(5i@^_
 # SECURITY WARNING: don't run with debug turned on in production!
 DEBUG = True
 
-ALLOWED_HOSTS = []
+ALLOWED_HOSTS = ['127.0.0.1', 'localhost']
+
+CSRF_TRUSTED_ORIGINS = [
+    'http://127.0.0.1:8000',
+    'http://localhost:8000',
+]
 
 
 # Application definition
@@ -57,7 +63,10 @@ ROOT_URLCONF = 'locallibrary.urls'
 TEMPLATES = [
     {
         'BACKEND': 'django.template.backends.django.DjangoTemplates',
-        'DIRS': [],
+        # Tell Django where to find global templates
+        'DIRS': [BASE_DIR / 'templates'],  # MUST point here
+    
+        # Allows Django to also look inside app/templates/
         'APP_DIRS': True,
         'OPTIONS': {
             'context_processors': [
@@ -118,3 +127,10 @@ USE_TZ = True
 # https://docs.djangoproject.com/en/6.0/howto/static-files/
 
 STATIC_URL = 'static/'
+
+# After login, redirect user to homepage instead of default /accounts/profile/
+LOGIN_REDIRECT_URL = 'catalog:index'  # after login
+LOGOUT_REDIRECT_URL = 'logged_out'    # after logout
+
+# Instead of sending real emails, print them in the console (for testing)
+EMAIL_BACKEND = 'django.core.mail.backends.console.EmailBackend'
