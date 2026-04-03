@@ -129,8 +129,10 @@ USE_TZ = True
 STATIC_URL = 'static/'
 
 # After login, redirect user to homepage instead of default /accounts/profile/
-LOGIN_REDIRECT_URL = 'catalog:index'  # after login
-LOGOUT_REDIRECT_URL = 'logged_out'    # after logout
+#LOGIN_REDIRECT_URL = 'catalog:index'  # This also work for both login & after logout.
+
+LOGIN_REDIRECT_URL = '/'
+LOGOUT_REDIRECT_URL = '/'
 
 # Instead of sending real emails, print them in the console (for testing)
 EMAIL_BACKEND = 'django.core.mail.backends.console.EmailBackend'

@@ -35,7 +35,9 @@
 
     {% else %}
       <!-- Login link with next redirect -->
-      <li><a href="{% url 'login' %}?next={{ request.path }}">Login</a></li>
+      <!-- <li><a href="{% url 'login' %}?next={{ request.path }}">Login</a></li>-->
+      <p>You are not logged in</p>
+      <a href="{% url 'login' %}">Log In</a>
     {% endif %}
   </ul>
     
@@ -43,6 +45,7 @@
 
   <div class="content">
     {% block content %}
+    <!--<a href="{% url 'login' %}">Log In</a> -->
     {% endblock content %}
   </div>
 </body>
