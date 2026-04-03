@@ -12,4 +12,5 @@ urlpatterns = [
     # URL for viewing borrowed books of current user
     path('mybooks/', views.LoanedBooksByUserListView.as_view(), name='my-borrowed'),
     
+    
 ]
