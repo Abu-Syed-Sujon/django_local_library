@@ -1,5 +1,6 @@
 from urllib import request
 import datetime
+from django import forms
 from django.contrib.auth.decorators import login_required, permission_required
 from django.http import HttpResponseRedirect
 from django.shortcuts import render, get_object_or_404, redirect
@@ -7,7 +8,7 @@ from django.urls import reverse, reverse_lazy
 from django.views import generic
 from .models import Book, Author, BookInstance, Genre
 from django.contrib.auth.mixins import LoginRequiredMixin, PermissionRequiredMixin
-from .forms import RenewBookModelForm
+from .forms import RenewBookModelForm, AuthorForm
 
 # Create your views here.
 
@@ -102,14 +103,21 @@ class LoanedBooksByUserListView(LoginRequiredMixin, generic.ListView):
 
 @login_required  # Must be logged in
 @permission_required('catalog.can_mark_returned', raise_exception=True)
-def my_view(request):
+def mark_returned_view(request, pk):
     """
-    Only users with 'can_mark_returned' permission can access.
+    View to mark a book instance as returned.
     
-    raise_exception=True:
-        - Returns 403 instead of redirect
+    Permissions:
+        - User must be logged in
+        - User must have 'can_mark_returned' permission
+        - Returns 403 if user lacks permission
     """
-    pass
+    book_instance = get_object_or_404(BookInstance, pk=pk)
+    
+    # mark the book as returned
+    book_instance.status = 'a'  # Set status to 'available'
+    book_instance.save()  # Save changes to database
+    return redirect('catalog:all-borrowed')  # Redirect to list of all borrowed books
 
 class AllBorrowedBooksListView(PermissionRequiredMixin, generic.ListView):
     """
@@ -152,23 +160,26 @@ def renew_book_librarian(request, pk):
         'book_instance': book_instance
     })
     
+
+    
     
 class AuthorCreate(PermissionRequiredMixin, generic.CreateView):  # pylint: disable=too-many-ancestors
     """Create a new author. Requires appropriate permissions."""
     model = Author
-    fields = '__all__'
-    initial = {'date_of_death': '05/01/2018'}
-    permission_required = 'catalog.can_mark_returned'
+    form_class = AuthorForm
+    permission_required = 'catalog.add_author'
 
 class AuthorUpdate(PermissionRequiredMixin, generic.UpdateView):  # pylint: disable=too-many-ancestors
     """Update an existing author. Requires appropriate permissions."""
     model = Author
-    fields = ['first_name', 'last_name', 'date_of_birth', 'date_of_death']
-    permission_required = 'catalog.can_mark_returned'
+    form_class = AuthorForm
+    permission_required = 'catalog.change_author'
 
 class AuthorDelete(PermissionRequiredMixin, generic.DeleteView):  # pylint: disable=too-many-ancestors
     """Delete an author. Requires appropriate staff permissions."""
     model = Author
-    success_url = reverse_lazy('authors')
-    permission_required = 'catalog.can_mark_returned'
+    #success_url = reverse_lazy('authors')
+    permission_required = 'catalog.delete_author'
     
+    def get_success_url(self):
+        return reverse_lazy('catalog:authors')

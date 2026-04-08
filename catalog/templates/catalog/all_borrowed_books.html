@@ -14,6 +14,10 @@
           {# Move the renewal link inside the loop so it has access to bookinst.id #}
           {% if perms.catalog.can_mark_returned %}
             - <a href="{% url 'catalog:renew-book-librarian' bookinst.id %}">Renew</a>
+            <form action="{% url 'catalog:mark-returned' bookinst.id %}" method="post" style="display: inline;">
+              {% csrf_token %}
+              <input type="submit" value="Mark as Returned">
+            </form>
           {% endif %}
         </li>
       {% endfor %}

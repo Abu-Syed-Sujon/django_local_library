@@ -1,4 +1,5 @@
 from django import forms
+from .models import Author 
 from django.core.exceptions import ValidationError
 from django.utils.translation import gettext_lazy as _
 import datetime
@@ -26,3 +27,18 @@ class RenewBookModelForm(forms.ModelForm):
             raise ValidationError(_('Invalid date - renewal more than 4 weeks ahead'))
 
         return data
+
+class AuthorForm(forms.ModelForm):
+    date_of_birth = forms.DateField(
+        #help_text="Enter the author's date of birth (YYYY-MM-DD)",
+        required=False,
+        widget=forms.DateInput(attrs={'type': 'date'}))
+    date_of_death = forms.DateField(
+        #help_text="Enter the author's date of death (YYYY-MM-DD)",
+        required=False,
+        widget=forms.DateInput(attrs={'type': 'date'}))
+    
+    class Meta:
+        model = Author
+        fields = '__all__'
+
