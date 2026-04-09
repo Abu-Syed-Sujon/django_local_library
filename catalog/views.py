@@ -55,6 +55,8 @@ class BookDetailView(generic.DetailView):
     View to display detailed information about a specific book.
     """
     model = Book
+   # template_name = 'catalog/book_details.html'
+    #paginate_by = 10
 
 
 class AuthorListView(generic.ListView):
@@ -183,3 +185,28 @@ class AuthorDelete(PermissionRequiredMixin, generic.DeleteView):  # pylint: disa
     
     def get_success_url(self):
         return reverse_lazy('catalog:authors')
+    
+
+#Book Create, Update, Delete Views
+class BookCreate(PermissionRequiredMixin, generic.CreateView):  # pylint: disable=too-many-ancestors
+    """Create a new book. Requires appropriate permissions."""
+    model = Book
+    fields = '__all__'
+    #form_class = BookForm
+    permission_required = 'catalog.add_book'
+
+class BookUpdate(PermissionRequiredMixin, generic.UpdateView):  # pylint: disable=too-many-ancestors
+    """Update an existing book. Requires appropriate permissions."""
+    model = Book
+    fields = '__all__'
+    permission_required = 'catalog.change_book'
+
+class BookDelete(PermissionRequiredMixin, generic.DeleteView):  # pylint: disable=too-many-ancestors
+    """Delete a book. Requires appropriate staff permissions."""
+    model = Book
+    #success_url = reverse_lazy('books')
+    permission_required = 'catalog.delete_book'
+    
+    def get_success_url(self):
+        return reverse_lazy('catalog:books')
+    

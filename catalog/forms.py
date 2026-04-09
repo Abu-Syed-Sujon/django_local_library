@@ -1,5 +1,5 @@
 from django import forms
-from .models import Author 
+from .models import Author, Book 
 from django.core.exceptions import ValidationError
 from django.utils.translation import gettext_lazy as _
 import datetime

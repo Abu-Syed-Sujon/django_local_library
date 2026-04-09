@@ -2,4 +2,5 @@
   {% csrf_token %}
   <p>Are you sure you want to delete the author "{{ object }}"?</p>
   <input type="submit" value="Yes, I'm sure">
+  <a href="{% url 'catalog:author-detail' object.pk %}">Cancel</a>
 </form>
