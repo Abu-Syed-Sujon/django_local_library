@@ -20,21 +20,23 @@ def index(request):
     num_visits= request.session.get('num_visits', 0)
     
         # Increase visit count
-    num_visits += 1
+    #num_visits += 1 
 
     # Save it back to session
-    request.session['num_visits'] = num_visits
+    request.session['num_visits'] = num_visits + 1
+    
     
     
     context = {
        "num_books" : num_books,
         "num_instances":num_instances,
         "num_instances_available": num_instances_available,
-    
         "num_authors": num_authors,
+        "num_visits": num_visits + 1,
+        
     }
     
-    return render(request, "index.html", context)
+    return render(request, "catalog/index.html", context)
 
 class BookListView(generic.ListView):
     model = Book
