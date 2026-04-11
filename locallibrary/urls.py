@@ -17,11 +17,18 @@ Including another URLconf
 from django.contrib import admin
 from django.urls import path, include
 from django.views.generic import RedirectView
+from catalog import views
 
 urlpatterns = [
+    path('', views.index, name='index'),  # homepage
     path('admin/', admin.site.urls),
     # Namespace your app to avoid name collisions between different apps
     path('catalog/', include('catalog.urls', namespace='catalog')), 
     # Root redirect to your main app
-    path('', RedirectView.as_view(url='catalog/')),
+    #path('', RedirectView.as_view(url='catalog/')),
+    
+    #Include all Django built-in authentication URLs
+    # This adds login, logout, password reset, etc.
+    path('accounts/', include('django.contrib.auth.urls')),
+
 ]

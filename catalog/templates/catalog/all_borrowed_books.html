@@ -1,0 +1,29 @@
+{% extends "base_generic.html" %}
+
+{% block content %}
+  <h1>All Borrowed Books</h1>
+
+  {% if bookinstance_list %}
+    <ul>
+      {% for bookinst in bookinstance_list %}
+        <li class="{% if bookinst.is_overdue %}text-danger{% endif %}">
+          <strong>{{ bookinst.book.title }}</strong><br>
+          Borrower: {{ bookinst.borrower }}<br>
+          Due back: {{ bookinst.due_back }}
+
+          {# Move the renewal link inside the loop so it has access to bookinst.id #}
+          {% if perms.catalog.can_mark_returned %}
+            - <a href="{% url 'catalog:renew-book-librarian' bookinst.id %}">Renew</a>
+            <form action="{% url 'catalog:mark-returned' bookinst.id %}" method="post" style="display: inline;">
+              {% csrf_token %}
+              <input type="submit" value="Mark as Returned">
+            </form>
+          {% endif %}
+        </li>
+      {% endfor %}
+    </ul>
+  {% else %}
+    <p>No borrowed books.</p>
+  {% endif %}
+
+{% endblock %}

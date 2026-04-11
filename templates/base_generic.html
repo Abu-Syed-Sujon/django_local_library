@@ -1,0 +1,55 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Local Library</title>
+</head>
+<body>
+  {% block sidebar %}
+  
+  <ul class="sidebar-nav">
+    <!-- Static links -->
+    <li><a href="{% url 'catalog:index' %}">Home</a></li>
+    <li><a href="{% url 'catalog:books' %}">All Books</a></li>
+    <li><a href="{% url 'catalog:authors' %}">All Authors</a></li>
+
+    <hr>
+    {% if perms.catalog.can_mark_returned %}
+    <li><a href="{% url 'catalog:all-borrowed' %}">All borrowed books</a></li>
+    {% endif %}
+
+    <!-- Authentication section -->
+    {% if user.is_authenticated %}
+      <li>User: {{ user.get_username }}</li>
+      
+      <!-- My borrowed books -->
+      <li><a href="{% url 'catalog:my-borrowed' %}">My Borrowed</a></li>
+      
+      <!-- Logout (POST required in Django 5+) -->
+      <li>
+        <form method="post" action="{% url 'logout' %}" id="logout-form" style="display:inline;">
+          {% csrf_token %}
+          <button type="submit" class="btn btn-link" style="padding:0;margin:0;color:blue;text-decoration:underline;cursor:pointer;">
+            Logout
+          </button>
+        </form>
+      </li>
+
+    {% else %}
+      <!-- Login link with next redirect -->
+      <!-- <li><a href="{% url 'login' %}?next={{ request.path }}">Login</a></li>-->
+      <p>You are not logged in</p>
+      <a href="{% url 'login' %}">Log In</a>
+    {% endif %}
+  </ul>
+    
+  {% endblock sidebar %}
+
+  <div class="content">
+    {% block content %}
+    <!--<a href="{% url 'login' %}">Log In</a> -->
+    {% endblock content %}
+  </div>
+</body>
+</html>

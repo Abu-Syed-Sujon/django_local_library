@@ -1,0 +1,8 @@
+<form action="" method="post">
+    
+  {% csrf_token %}
+  <p>Are you sure you want to delete the book "{{ book.title }}"?</p>
+  <input type="submit" value="Yes, Delete" />
+  <a href="{% url 'catalog:book-detail' book.pk %}">Cancel</a>
+
+</form>

@@ -2,6 +2,12 @@
 {% block content %}
 
 <h1>Author List</h1>
+{% if perms.catalog.add_author %}
+  <a href="{% url 'catalog:author-create' %}">Create New Author</a>
+{% endif %}
+<!-- IGNORE -->
+
+
 {% if author_list %}
   
 
@@ -10,8 +16,21 @@
       <li>
         <a href="{{author.get_absolute_url}}">
           {{ author.first_name }} {{ author.last_name }}
-
-      </a>
+        </a>
+          
+          
+          {# Alternative approach using a single permission check #}
+          {% if perms.catalog.change_author or perms.catalog.delete_author %}
+            - <a href="{% url 'catalog:author-detail' author.id %}">Details</a>
+            {% if perms.catalog.change_author %}
+              - <a href="{% url 'catalog:author-update' author.id %}">Update</a>
+            {% endif %}
+            {% if perms.catalog.delete_author %}
+              - <a href="{% url 'catalog:author-delete' author.id %}">Delete</a>
+            {% endif %}
+          
+        {% endif %}
+      
       </li>
 
     {% endfor %}
