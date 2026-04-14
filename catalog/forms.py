@@ -1,9 +1,8 @@
 from django import forms
-from .models import Author, Book 
+from .models import Author, Book, BookInstance
 from django.core.exceptions import ValidationError
 from django.utils.translation import gettext_lazy as _
 import datetime
-from .models import BookInstance
 
 class RenewBookModelForm(forms.ModelForm):
     class Meta:
