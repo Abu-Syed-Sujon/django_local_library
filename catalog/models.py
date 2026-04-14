@@ -61,10 +61,10 @@ class Author(models.Model):
     last_name = models.CharField(max_length=100)
 
     # Optional birth date
-    date_of_birth = models.DateField(null=True, blank=True)
+    date_of_birth = models.DateField('born', null=True, blank=True)
 
     # Optional death date
-    date_of_death = models.DateField('Died', null=True, blank=True)
+    date_of_death = models.DateField('died', null=True, blank=True)
 
     class Meta:
         # Default ordering when querying authors
